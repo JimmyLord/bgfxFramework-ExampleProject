@@ -1,0 +1,3 @@
+[submodule "Libraries/bgfxFramework"]
+	path = Libraries/bgfxFramework
+	url = https://github.com/JimmyLord/bgfxFramework.git

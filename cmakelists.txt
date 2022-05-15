@@ -1,0 +1,70 @@
+cmake_minimum_required( VERSION 3.10 )
+
+# Global Settings
+set_property( GLOBAL PROPERTY USE_FOLDERS ON )
+#set_property( GLOBAL PROPERTY CMAKE_SKIP_INSTALL_ALL_DEPENDENCY TRUE )
+#set_property( GLOBAL PROPERTY CMAKE_SKIP_PACKAGE_ALL_DEPENDENCY TRUE )
+
+# Solution
+project( GameSolution VERSION 0.0.1 )
+
+# Visual Studio Settings
+if( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+	# Program Database for Edit and Continue
+	set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI" )
+#	set( CMAKE_SHARED_LINKER_FLAGS "/SAFESEH:NO" )
+#	set( CMAKE_EXE_LINKER_FLAGS "/SAFESEH:NO" )
+endif()
+
+###################
+# bgfxFramework Library
+###################
+
+add_subdirectory( Libraries/bgfxFramework )
+
+###################
+# Game Project
+###################
+
+# File Setup
+file( GLOB_RECURSE GameSourceFiles
+	Game/Source/*.cpp
+	Game/Source/*.h
+	Game/DataRaw/Shaders/*.vert
+	Game/DataRaw/Shaders/*.frag
+	Game/DataRaw/Shaders/*.sc
+	Game/DataRaw/*.bat
+	BuildShaders.bat
+	GenerateProjectFiles.bat
+)
+source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${GameSourceFiles} )
+
+# Project Creation
+add_executable( GameProject WIN32 ${GameSourceFiles} )
+
+target_include_directories( GameProject PUBLIC
+	Game/Source
+	Libraries/bgfxFramework/Source
+)
+
+target_compile_features( GameProject PRIVATE cxx_std_17 )
+
+# PCH Files
+target_precompile_headers( GameProject PRIVATE Libraries/bgfxFramework/Source/Framework.h )
+file( GLOB_RECURSE GamePCHFiles ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/cmake_pch.* )
+source_group( "CMake PCH Files" FILES ${GamePCHFiles} )
+
+# Libraries to Link
+target_link_libraries( GameProject
+	Framework
+	bgfx
+	bx
+	bimg
+)
+
+# Visual Studio Settings
+if( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+	# Debug working directory and Startup Project
+	set_property( TARGET GameProject PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/Game" )
+	set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT GameProject )
+endif()
