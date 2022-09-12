@@ -15,6 +15,7 @@
 #include "Objects/Player.h"
 #include "Objects/PlayerController.h"
 #include "Meshes/Shapes.h"
+#include "Meshes/VertexFormats.h"
 
 Game::Game(fw::FWCore& fwCore)
     : GameCore( fwCore )
@@ -69,7 +70,7 @@ void Game::Init()
 
     // General renderer settings.
     bgfx::setViewClear( 0, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH, 0x000030ff, 1.0f, 0 );
-    bgfx::setViewRect( 0, 0, 0, m_FWCore.GetWindowWidth(), m_FWCore.GetWindowHeight() );
+    bgfx::setViewRect( 0, 0, 0, m_FWCore.GetWindowClientWidth(), m_FWCore.GetWindowClientHeight() );
 
     m_pEventManager = new fw::EventManager();
 
@@ -131,6 +132,10 @@ void Game::Init()
     m_ECSRegistry.emplace<fw::MeshData>( entityID, m_pMeshes["Square"], m_pMaterials["Red"] );
 }
 
+void Game::OnShutdown()
+{
+}
+
 void Game::StartFrame(float deltaTime)
 {
     m_pImGuiManager->StartFrame( deltaTime );
@@ -160,8 +165,8 @@ void Game::OnEvent(fw::Event* pEvent)
 
     if( pEvent->GetType() == fw::WindowResizeEvent::GetStaticEventType() )
     {
-        int width = m_FWCore.GetWindowWidth();
-        int height = m_FWCore.GetWindowHeight();
+        int width = m_FWCore.GetWindowClientWidth();
+        int height = m_FWCore.GetWindowClientHeight();
 
         m_pCamera->SetAspectRatio( (float)width/height );
     }

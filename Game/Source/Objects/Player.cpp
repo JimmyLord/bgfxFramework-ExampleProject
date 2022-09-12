@@ -52,8 +52,8 @@ void Player::Update(float deltaTime)
 
     if( m_pPlayerController->WasPressed( PlayerController::Mask::Action ) )
     {
-        transformData.position.x = fw::Random::GetFloat( 0.0f, 10.0f );
-        transformData.position.y = fw::Random::GetFloat( 0.0f, 10.0f );
+        transformData.position.x = fw::Random::Float( 0.0f, 10.0f );
+        transformData.position.y = fw::Random::Float( 0.0f, 10.0f );
     }
 
     dir.Normalize();

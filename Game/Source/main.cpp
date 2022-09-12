@@ -17,8 +17,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     //fw::FWCore fwCore( 600, 600, bgfx::RendererType::Direct3D11 );
     //fw::FWCore fwCore( 600, 600, bgfx::RendererType::Direct3D12 );
     //fw::FWCore fwCore( 600, 600, bgfx::RendererType::OpenGLES );
-    fw::FWCore fwCore( 600, 600, bgfx::RendererType::OpenGL );
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::Vulkan );
+    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::OpenGL );
+    fw::FWCore fwCore( 600, 600, bgfx::RendererType::Vulkan );
     //fw::FWCore fwCore( 600, 600, bgfx::RendererType::WebGPU );
 
     ////untested fw::FWCore fwCore( 600, 600, bgfx::RendererType::Agc );
