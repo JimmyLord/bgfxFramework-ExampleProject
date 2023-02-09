@@ -29,6 +29,10 @@ public:
     virtual void Draw() override;
 
 protected:
+    // Render to Texture Test
+    bgfx::TextureHandle m_FBOTexture = BGFX_INVALID_HANDLE;
+    bgfx::FrameBufferHandle m_FBO = BGFX_INVALID_HANDLE;
+
     // Interface.
     fw::ImGuiManager* m_pImGuiManager = nullptr;
     void Editor_DisplayObjectList();

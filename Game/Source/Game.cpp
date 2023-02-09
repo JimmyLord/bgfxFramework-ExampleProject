@@ -25,6 +25,16 @@ Game::Game(fw::FWCore& fwCore)
 
 Game::~Game()
 {
+    if( bgfx::isValid( m_FBO ) )
+    {
+        bgfx::destroy( m_FBO );
+    }
+
+    if( bgfx::isValid( m_FBOTexture ) )
+    {
+        bgfx::destroy( m_FBOTexture );
+    }
+
     for( auto& meshPair : m_pMeshes )
     {
         delete meshPair.second;
@@ -130,6 +140,12 @@ void Game::Init()
     m_ECSRegistry.emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
     m_ECSRegistry.emplace<fw::NameData>( entityID, "Headless Object" );
     m_ECSRegistry.emplace<fw::MeshData>( entityID, m_pMeshes["Square"], m_pMaterials["Red"] );
+
+    // Create an FBO.
+    m_FBOTexture = bgfx::createTexture2D( 512, 512, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT | BGFX_SAMPLER_COMPARE_LEQUAL );
+
+    bgfx::TextureHandle fbTextures[] = { m_FBOTexture };
+    m_FBO = bgfx::createFrameBuffer( 1, fbTextures, true );
 }
 
 void Game::OnShutdown()
@@ -187,6 +203,11 @@ void Game::Update(float deltaTime)
 void Game::Draw()
 {
     int viewID = 0;
+
+    // Render the scene into an FBO.
+    bgfx::setViewFrameBuffer( viewID, m_FBO );
+    bgfx::setViewRect( viewID, 0, 0, 512, 512 );
+    bgfx::setViewClear( viewID, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0 );
     
     //bgfx::touch( viewID );
 
@@ -196,7 +217,7 @@ void Game::Draw()
 
     // Program the view and proj uniforms from the camera.
     m_pCamera->Enable( viewID );
-
+   
     // Draw all objects.
     GameCore::DrawIntoView( viewID );
 
@@ -211,6 +232,14 @@ void Game::Draw()
     {
         bgfx::setDebug( BGFX_DEBUG_NONE );
     }
+
+    // Draw our main view in a window.
+    if( ImGui::Begin("Game view") )
+    {
+        float aspect = 1;
+        ImGui::Image( fw::imguiTexture(m_FBOTexture), ImVec2( (float)512, 512*aspect ), ImVec2(0,0), ImVec2(1,1) );
+    }
+    ImGui::End();
 
     m_pImGuiManager->EndFrame();
 }
