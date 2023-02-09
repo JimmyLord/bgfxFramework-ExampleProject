@@ -78,7 +78,7 @@ void Game::Init()
     m_pUniforms = new fw::Uniforms();
 
     // Create vertex formats.
-    InitTextureFormats();
+    InitVertexFormats();
 
     // Create some meshes.
     m_pMeshes["Triangle"] = CreateTriangleMesh();
@@ -186,17 +186,19 @@ void Game::Update(float deltaTime)
 
 void Game::Draw()
 {
-    //bgfx::touch( 0 );
+    int viewID = 0;
+    
+    //bgfx::touch( viewID );
 
     // Setup time uniforms.
     float time = (float)fw::GetSystemTimeSinceGameStart();
     bgfx::setUniform( m_pUniforms->m_Map["u_Time"], &time );
 
     // Program the view and proj uniforms from the camera.
-    m_pCamera->Enable();
+    m_pCamera->Enable( viewID );
 
     // Draw all objects.
-    GameCore::Draw();
+    GameCore::DrawIntoView( viewID );
 
     // Show bgfx debug stats.
     ImGui::Checkbox( "Show Debug Stats", &m_ShowDebugStats );

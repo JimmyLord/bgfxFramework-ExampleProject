@@ -15,7 +15,7 @@
 bgfx::VertexLayout VertexFormat_PosColor::format;
 bgfx::VertexLayout VertexFormat_PosUV::format;
 
-void InitTextureFormats()
+void InitVertexFormats()
 {
     VertexFormat_PosColor::InitVertexLayout();
     VertexFormat_PosUV::InitVertexLayout();

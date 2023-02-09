@@ -11,7 +11,7 @@
 
 #include "DataTypes.h"
 
-void InitTextureFormats();
+void InitVertexFormats();
 
 struct VertexFormat_PosColor
 {
