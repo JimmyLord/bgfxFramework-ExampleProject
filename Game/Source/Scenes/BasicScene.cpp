@@ -15,11 +15,13 @@
 BasicScene::BasicScene(Game* pGame)
     : Scene( pGame )
 {
+    m_pComponentManager = new fw::ComponentManager();
     PlayerController* pController = pGame->GetController();
     
     // Create some GameObjects.
     m_pCamera = new fw::Camera( this, vec3(5,5,-20) );
     m_pCamera->SetLookAtPosition( vec3(5,5,0) );
+    m_Objects.push_back( m_pCamera );
     m_pPlayer = new Player( this, pController, "Player", vec3(6,5,-0.1f), pGame->m_pMeshes["Sprite"], pGame->m_pMaterials["SokobanPlayer01"] );
     m_Objects.push_back( m_pPlayer );
 

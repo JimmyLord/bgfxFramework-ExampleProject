@@ -230,7 +230,7 @@ void Game::Editor_DisplayMainMenu()
             nlohmann::json jScene;
             m_pActiveScene->SaveToJSON( jScene );
             std::string jsonString = jScene.dump( 4 );
-            fw::SaveCompleteFile( "Data/Scenes/TestScene.scene", jsonString.c_str(), jsonString.length() );
+            fw::SaveCompleteFile( "Data/Scenes/TestScene.scene", jsonString.c_str(), (int32)jsonString.length() );
         }
         
         if( ImGui::MenuItem( "Load Scene", "" ) )
