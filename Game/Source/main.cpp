@@ -13,18 +13,18 @@
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::Direct3D9 );
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::Direct3D11 );
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::Direct3D12 );
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::OpenGLES );
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::OpenGL );
-    fw::FWCore fwCore( 600, 600, bgfx::RendererType::Vulkan );
-    //fw::FWCore fwCore( 600, 600, bgfx::RendererType::WebGPU );
+    //fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Direct3D9 );
+    //fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Direct3D11 );
+    //fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Direct3D12 );
+    //fw::FWCore fwCore( 1280, 720, bgfx::RendererType::OpenGLES );
+    //fw::FWCore fwCore( 1280, 720, bgfx::RendererType::OpenGL );
+    fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Vulkan );
+    //fw::FWCore fwCore( 1280, 720, bgfx::RendererType::WebGPU );
 
-    ////untested fw::FWCore fwCore( 600, 600, bgfx::RendererType::Agc );
-    ////untested fw::FWCore fwCore( 600, 600, bgfx::RendererType::Gnm );
-    ////untested fw::FWCore fwCore( 600, 600, bgfx::RendererType::Metal );
-    ////untested fw::FWCore fwCore( 600, 600, bgfx::RendererType::Nvn );
+    ////untested fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Agc );
+    ////untested fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Gnm );
+    ////untested fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Metal );
+    ////untested fw::FWCore fwCore( 1280, 720, bgfx::RendererType::Nvn );
 
     Game game( fwCore );
 

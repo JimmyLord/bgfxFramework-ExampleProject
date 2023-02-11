@@ -129,11 +129,37 @@ void Game::StartFrame(float deltaTime)
 {
     m_pImGuiManager->StartFrame( deltaTime );
 
+    // Setup a main window with no frame and a dockspace that covers the entire viewport.
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
+                           | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+                           | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos( viewport->WorkPos );
+    ImGui::SetNextWindowSize( viewport->WorkSize );
+
+    if( ImGui::Begin( "Main Dock", nullptr, flags ) )
+    {
+        ImGuiID dockspaceID = ImGui::GetID( "My Dockspace" );
+        ImGui::DockSpace( dockspaceID );
+    }
+    ImGui::End();
+
     // Reset the controller.
     m_pPlayerController->StartFrame();
 
     // Dispatch events.
     m_pEventManager->DispatchAllEvents( deltaTime, this );
+
+    // Add the main menu bar.
+    ImGui::BeginMainMenuBar();
+    if( ImGui::BeginMenu( "Debug" ) )
+    {
+        // Show bgfx debug stats.
+        ImGui::MenuItem( "Show Debug Stats", "", &m_ShowDebugStats );
+        ImGui::EndMenu();
+    }
+    ImGui::EndMainMenuBar();
 }
 
 void Game::OnEvent(fw::Event* pEvent)
@@ -165,7 +191,6 @@ void Game::Draw()
     bgfx::setUniform( m_pUniforms->m_Map["u_Time"], &time );
 
     // Show bgfx debug stats.
-    ImGui::Checkbox( "Show Debug Stats", &m_ShowDebugStats );
     bgfx::dbgTextClear();
     if( m_ShowDebugStats )
     {
