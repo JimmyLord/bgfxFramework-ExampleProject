@@ -16,7 +16,7 @@ class PlayerController;
 class Player : public fw::GameObject
 {
 public:
-    Player(fw::GameCore* pGameCore, PlayerController* pPlayerController, std::string name, vec3 pos, fw::Mesh* pMesh, fw::Material* pMaterial);
+    Player(fw::Scene* pScene, PlayerController* pPlayerController, std::string name, vec3 pos, fw::Mesh* pMesh, fw::Material* pMaterial);
     virtual ~Player();
 
     virtual void Update(float deltaTime) override;

@@ -12,10 +12,10 @@
 #include "DataTypes.h"
 #include "Game.h"
 #include "Events/GameEvents.h"
-#include "Objects/Player.h"
-#include "Objects/PlayerController.h"
 #include "Meshes/Shapes.h"
 #include "Meshes/VertexFormats.h"
+#include "Objects/PlayerController.h"
+#include "Scenes/BasicScene.h"
 
 Game::Game(fw::FWCore& fwCore)
     : GameCore( fwCore )
@@ -59,13 +59,6 @@ Game::~Game()
     {
         delete shaderPair.second;
     }
-
-    for( fw::GameObject* pObject : m_Objects )
-    {
-        delete pObject;
-    }
-    
-    delete m_pCamera;
 
     delete m_pPlayerController;
 
@@ -119,27 +112,7 @@ void Game::Init()
     // Create a controller.
     m_pPlayerController = new PlayerController();
 
-    // Create some GameObjects.
-    m_pCamera = new fw::Camera( this, vec3(5,5,-20) );
-    m_pCamera->SetLookAtPosition( vec3(5,5,0) );
-    m_pPlayer = new Player( this, m_pPlayerController, "Player", vec3(6,5,-0.1f), m_pMeshes["Sprite"], m_pMaterials["SokobanPlayer01"] );
-    m_Objects.push_back( m_pPlayer );
-
-    fw::GameObject* pTestObjectToDelete = new fw::GameObject( this, "delete me", vec3(1,9,0), m_pMeshes["Square"], m_pMaterials["Blue"] );
-
-    m_Objects.push_back( new fw::GameObject( this, "Object 1", vec3(0,0,0), m_pMeshes["Triangle"], m_pMaterials["VertexColor"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 2", vec3(10,10,0), m_pMeshes["Triangle"], m_pMaterials["Blue"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 3", vec3(5,5,0), m_pMeshes["Square"], m_pMaterials["VertexColor"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 4", vec3(1,1,0), m_pMeshes["Square"], m_pMaterials["VertexColor"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 5", vec3(1,9,0), m_pMeshes["Square"], m_pMaterials["Blue"] ) );
-
-    delete pTestObjectToDelete;
-
-    // Create an entity without a GameObject class.
-    entt::entity entityID = CreateEntity();
-    m_ECSRegistry.emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
-    m_ECSRegistry.emplace<fw::NameData>( entityID, "Headless Object" );
-    m_ECSRegistry.emplace<fw::MeshData>( entityID, m_pMeshes["Square"], m_pMaterials["Red"] );
+    m_pActiveScene = new BasicScene( this );
 
     // Create an FBO along with a texture to render to.
     // TODO: Don't limit this to a 2048x2048 texture. Have it resize if the window is resized to a larger size.
@@ -167,37 +140,13 @@ void Game::OnEvent(fw::Event* pEvent)
 {
     // Process events.
     m_pPlayerController->OnEvent( pEvent );
-
-    if( pEvent->GetType() == RemoveFromGameEvent::GetStaticEventType() )
-    {
-        RemoveFromGameEvent* pRemoveFromGameEvent = static_cast<RemoveFromGameEvent*>( pEvent );
-        fw::GameObject* pObject = pRemoveFromGameEvent->GetGameObject();
-
-        auto it = std::find( m_Objects.begin(), m_Objects.end(), pObject );
-        m_Objects.erase( it );
-
-        delete pObject;
-    }
-
-    if( pEvent->GetType() == fw::WindowResizeEvent::GetStaticEventType() )
-    {
-        int width = m_FWCore.GetWindowClientWidth();
-        int height = m_FWCore.GetWindowClientHeight();
-
-        m_pCamera->SetAspectRatio( (float)width/height );
-    }
 }
 
 void Game::Update(float deltaTime)
 {
+    m_pActiveScene->Update( deltaTime );
+    
     Editor_DisplayObjectList();
-
-    for( fw::GameObject* pObject : m_Objects )
-    {
-        pObject->Update( deltaTime );
-    }
-
-    m_pCamera->Update( deltaTime );
 }
 
 void Game::Draw()
@@ -214,13 +163,6 @@ void Game::Draw()
     // Setup time uniforms.
     float time = (float)fw::GetSystemTimeSinceGameStart();
     bgfx::setUniform( m_pUniforms->m_Map["u_Time"], &time );
-
-    // Program the view and proj uniforms from the camera.
-    m_pCamera->SetAspectRatio( (float)m_GameWindowSize.x / m_GameWindowSize.y );
-    m_pCamera->Enable( viewID );
-   
-    // Draw all objects.
-    GameCore::DrawIntoView( viewID );
 
     // Show bgfx debug stats.
     ImGui::Checkbox( "Show Debug Stats", &m_ShowDebugStats );
@@ -243,7 +185,9 @@ void Game::Draw()
         m_GameWindowSize = ivec2( (int)size.x, (int)size.y );
         if( m_GameWindowSize.x > m_GameTextureSize.x ) { m_GameWindowSize.x = m_GameTextureSize.x; }
         if( m_GameWindowSize.y > m_GameTextureSize.y ) { m_GameWindowSize.y = m_GameTextureSize.y; }
-        
+
+        m_pActiveScene->Draw( viewID );
+
         vec2 uvMax = vec2( (float)m_GameWindowSize.x / m_GameTextureSize.x, (float)m_GameWindowSize.y / m_GameTextureSize.y );
         ImGui::Image( fw::imguiTexture(m_FBOTexture), ImVec2( (float)m_GameWindowSize.x, (float)m_GameWindowSize.y ), ImVec2(0,0), uvMax );
     }
@@ -256,13 +200,7 @@ void Game::Editor_DisplayObjectList()
 {
     ImGui::Begin( "Object List" );
 
-    auto view = m_ECSRegistry.view<fw::NameData>();
-    for( auto entity : view )
-    {
-        auto& nameData = view.get<fw::NameData>( entity );
-
-        ImGui::Text( "%s", nameData.m_Name );
-    }
+    m_pActiveScene->Editor_DisplayObjectList();
 
     ImGui::End(); // "Object List"
 }

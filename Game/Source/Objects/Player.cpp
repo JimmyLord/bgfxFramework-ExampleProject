@@ -15,8 +15,8 @@
 #include "Objects/Player.h"
 #include "Objects/PlayerController.h"
 
-Player::Player(fw::GameCore* pGameCore, PlayerController* pPlayerController, std::string name, vec3 pos, fw::Mesh* pMesh, fw::Material* pMaterial)
-    : fw::GameObject( pGameCore, name, pos, pMesh, pMaterial )
+Player::Player(fw::Scene* pScene, PlayerController* pPlayerController, std::string name, vec3 pos, fw::Mesh* pMesh, fw::Material* pMaterial)
+    : fw::GameObject( pScene, name, pos, pMesh, pMaterial )
     , m_pPlayerController( pPlayerController )
 {
 }
@@ -48,7 +48,7 @@ void Player::Update(float deltaTime)
         dir.x += 1;
     }
 
-    fw::TransformData& transformData = m_pGameCore->GetECSRegistry().get<fw::TransformData>( m_EntityID );
+    fw::TransformData& transformData = m_pScene->GetECSRegistry().get<fw::TransformData>( m_EntityID );
 
     if( m_pPlayerController->WasPressed( PlayerController::Mask::Action ) )
     {

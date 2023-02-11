@@ -17,6 +17,8 @@ class PlayerController;
 
 class Game : public fw::GameCore
 {
+    friend class BasicScene; // Temp for access to Resources.
+    
 public:
     Game(fw::FWCore& fwCore);
     virtual ~Game() override;
@@ -27,6 +29,9 @@ public:
     virtual void OnEvent(fw::Event* pEvent) override;
     virtual void Update(float deltaTime) override;
     virtual void Draw() override;
+
+    PlayerController* GetController() { return m_pPlayerController; }
+    ivec2 GetGameWindowSize() { return m_GameWindowSize; }
 
 protected:
     // Render to Texture Test
@@ -48,12 +53,12 @@ protected:
     ivec2 m_GameWindowSize = vec2( 512, 512 );
     ivec2 m_GameTextureSize = vec2( 2048, 2048 );
 
-    // GameObjects and Helpers.
+    // Scene.
+    fw::Scene* m_pActiveScene = nullptr;
+
+    // Input.
     PlayerController* m_pPlayerController = nullptr;
 
-    fw::Camera* m_pCamera = nullptr;
-    Player* m_pPlayer = nullptr;
-    std::vector<fw::GameObject*> m_Objects;
-
+    // Other.
     bool m_ShowDebugStats = false;
 };

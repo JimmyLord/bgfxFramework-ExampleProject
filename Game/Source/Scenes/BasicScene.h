@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Jimmy Lord
+// Copyright (c) 2022-2023 Jimmy Lord
 //
 // This software is provided 'as-is', without any express or implied warranty.  In no event will the authors be held liable for any damages arising from the use of this software.
 // Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -8,3 +8,27 @@
 // 3. This notice may not be removed or altered from any source distribution.
 
 #pragma once
+
+class Game;
+class Player;
+
+class BasicScene : public fw::Scene
+{
+public:
+    BasicScene(Game* pGame);
+    virtual ~BasicScene() override;
+
+    virtual void Init() override;
+    virtual void OnShutdown() override;
+    virtual void StartFrame(float deltaTime) override;
+    virtual void OnEvent(fw::Event* pEvent) override;
+    virtual void Update(float deltaTime) override;
+    virtual void Draw(int viewID) override;
+
+    Game* GetGame();
+
+protected:
+    // GameObjects.
+    fw::Camera* m_pCamera = nullptr;
+    Player* m_pPlayer = nullptr;
+};
