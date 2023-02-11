@@ -17,9 +17,9 @@
 //=======================
 static const VertexFormat_PosColor g_TriangleVerts[] =
 {
-    { vec3( 0.0f, 0.5f, 0.0f), 0x000000ff }, // Top
-    { vec3(-0.5f,-0.5f, 0.0f), 0x0000ff00 }, // Bottom-left
-    { vec3( 0.5f,-0.5f, 0.0f), 0x00ff0000 }, // Bottom-right
+    { vec3( 0.0f, 0.5f, 0.0f), 0xff0000ff }, // Top
+    { vec3(-0.5f,-0.5f, 0.0f), 0xff00ff00 }, // Bottom-left
+    { vec3( 0.5f,-0.5f, 0.0f), 0xffff0000 }, // Bottom-right
 };
 static const uint16 g_TriangleIndices[] =
 {
@@ -35,13 +35,13 @@ fw::Mesh* CreateTriangleMesh()
 //=======================
 static const VertexFormat_PosColor g_SquareVerts[] =
 {
-    { vec3(-0.5f, 0.5f, 0.0f), 0x0000ff00 }, // Top-left
-    { vec3(-0.5f,-0.5f, 0.0f), 0x00000000 }, // Bottom-left
-    { vec3( 0.5f,-0.5f, 0.0f), 0x00000000 }, // Bottom-right
+    { vec3(-0.5f, 0.5f, 0.0f), 0xff00ff00 }, // Top-left
+    { vec3(-0.5f,-0.5f, 0.0f), 0xff000000 }, // Bottom-left
+    { vec3( 0.5f,-0.5f, 0.0f), 0xff000000 }, // Bottom-right
 
-    { vec3(-0.5f, 0.5f, 0.0f), 0x0000ff00 }, // Top-left
-    { vec3( 0.5f,-0.5f, 0.0f), 0x00000000 }, // Bottom-right
-    { vec3( 0.5f, 0.5f, 0.0f), 0x0000ff00 }, // Top-right
+    { vec3(-0.5f, 0.5f, 0.0f), 0xff00ff00 }, // Top-left
+    { vec3( 0.5f,-0.5f, 0.0f), 0xff000000 }, // Bottom-right
+    { vec3( 0.5f, 0.5f, 0.0f), 0xff00ff00 }, // Top-right
 };
 static const uint16 g_SquareIndices[] =
 {
