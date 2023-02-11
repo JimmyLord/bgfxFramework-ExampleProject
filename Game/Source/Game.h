@@ -33,6 +33,10 @@ public:
     PlayerController* GetController() { return m_pPlayerController; }
     ivec2 GetGameWindowSize() { return m_GameWindowSize; }
 
+    void Editor_CreateMainFrame();
+    void Editor_DisplayMainMenu();
+    void Editor_DisplayObjectList();
+
 protected:
     // Render to Texture Test
     bgfx::TextureHandle m_FBOTexture = BGFX_INVALID_HANDLE;
@@ -40,7 +44,6 @@ protected:
 
     // Interface.
     fw::ImGuiManager* m_pImGuiManager = nullptr;
-    void Editor_DisplayObjectList();
 
     // Resources.
     std::map<std::string, fw::Mesh*> m_pMeshes;

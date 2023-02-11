@@ -129,37 +129,14 @@ void Game::StartFrame(float deltaTime)
 {
     m_pImGuiManager->StartFrame( deltaTime );
 
-    // Setup a main window with no frame and a dockspace that covers the entire viewport.
-    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
-                           | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
-                           | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-
-    ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos( viewport->WorkPos );
-    ImGui::SetNextWindowSize( viewport->WorkSize );
-
-    if( ImGui::Begin( "Main Dock", nullptr, flags ) )
-    {
-        ImGuiID dockspaceID = ImGui::GetID( "My Dockspace" );
-        ImGui::DockSpace( dockspaceID );
-    }
-    ImGui::End();
+    Editor_CreateMainFrame();
+    Editor_DisplayMainMenu();
 
     // Reset the controller.
     m_pPlayerController->StartFrame();
 
     // Dispatch events.
     m_pEventManager->DispatchAllEvents( deltaTime, this );
-
-    // Add the main menu bar.
-    ImGui::BeginMainMenuBar();
-    if( ImGui::BeginMenu( "Debug" ) )
-    {
-        // Show bgfx debug stats.
-        ImGui::MenuItem( "Show Debug Stats", "", &m_ShowDebugStats );
-        ImGui::EndMenu();
-    }
-    ImGui::EndMainMenuBar();
 }
 
 void Game::OnEvent(fw::Event* pEvent)
@@ -219,6 +196,63 @@ void Game::Draw()
     ImGui::End();
 
     m_pImGuiManager->EndFrame();
+}
+
+void Game::Editor_CreateMainFrame()
+{
+    // Setup a main window with no frame and a dockspace that covers the entire viewport.
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar
+        | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+        | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos( viewport->WorkPos );
+    ImGui::SetNextWindowSize( viewport->WorkSize );
+
+    if( ImGui::Begin( "Main Dock", nullptr, flags ) )
+    {
+        ImGuiID dockspaceID = ImGui::GetID( "My Dockspace" );
+        ImGui::DockSpace( dockspaceID );
+    }
+    ImGui::End();
+}
+
+void Game::Editor_DisplayMainMenu()
+{
+    // Add the main menu bar.
+    ImGui::BeginMainMenuBar();
+    
+    if( ImGui::BeginMenu( "File" ) )
+    {
+        // Show bgfx debug stats.
+        if( ImGui::MenuItem( "Save Scene", "" ) )
+        {
+            nlohmann::json jScene;
+            m_pActiveScene->SaveToJSON( jScene );
+            std::string jsonString = jScene.dump( 4 );
+            fw::SaveCompleteFile( "Data/Scenes/TestScene.scene", jsonString.c_str(), jsonString.length() );
+        }
+        
+        if( ImGui::MenuItem( "Load Scene", "" ) )
+        {
+            const char* jsonString = fw::LoadCompleteFile( "Data/Scenes/TestScene.scene", nullptr );
+            nlohmann::json jScene = nlohmann::json::parse( jsonString );
+            delete[] jsonString;
+
+            m_pActiveScene->LoadFromJSON( jScene );
+        }
+        
+        ImGui::EndMenu();
+    }
+    
+    if( ImGui::BeginMenu( "Debug" ) )
+    {
+        // Show bgfx debug stats.
+        ImGui::MenuItem( "Show Debug Stats", "", &m_ShowDebugStats );
+        ImGui::EndMenu();
+    }
+    
+    ImGui::EndMainMenuBar();
 }
 
 void Game::Editor_DisplayObjectList()
