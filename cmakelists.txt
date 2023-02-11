@@ -30,6 +30,7 @@ add_subdirectory( Libraries/bgfxFramework )
 file( GLOB_RECURSE GameSourceFiles
 	Game/Source/*.cpp
 	Game/Source/*.h
+	Game/Data/Scenes/*.scene
 	Game/DataRaw/Shaders/*.vert
 	Game/DataRaw/Shaders/*.frag
 	Game/DataRaw/Shaders/*.sc

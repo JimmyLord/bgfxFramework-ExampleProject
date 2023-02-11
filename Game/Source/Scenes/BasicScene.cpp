@@ -17,29 +17,30 @@ BasicScene::BasicScene(Game* pGame)
 {
     m_pComponentManager = new fw::ComponentManager();
     PlayerController* pController = pGame->GetController();
+    fw::ResourceManager* pResources = pGame->GetResourceManager();
     
     // Create some GameObjects.
     m_pCamera = new fw::Camera( this, vec3(5,5,-20) );
     m_pCamera->SetLookAtPosition( vec3(5,5,0) );
-    m_Objects.push_back( m_pCamera );
-    m_pPlayer = new Player( this, pController, "Player", vec3(6,5,-0.1f), pGame->m_pMeshes["Sprite"], pGame->m_pMaterials["SokobanPlayer01"] );
-    m_Objects.push_back( m_pPlayer );
+    ////m_Objects.push_back( m_pCamera );
+    //m_pPlayer = new Player( this, pController, "Player", vec3(6,5,-0.1f), pResources->GetMesh("Sprite"), pResources->GetMaterial("SokobanPlayer01") );
+    //m_Objects.push_back( m_pPlayer );
 
-    fw::GameObject* pTestObjectToDelete = new fw::GameObject( this, "delete me", vec3(1,9,0), pGame->m_pMeshes["Square"], pGame->m_pMaterials["Blue"] );
+    //fw::GameObject* pTestObjectToDelete = new fw::GameObject( this, "delete me", vec3(1,9,0), pResources->GetMesh("Square"), pResources->GetMaterial("Blue") );
 
-    m_Objects.push_back( new fw::GameObject( this, "Object 1", vec3(0,0,0), pGame->m_pMeshes["Triangle"], pGame->m_pMaterials["VertexColor"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 2", vec3(10,10,0), pGame->m_pMeshes["Triangle"], pGame->m_pMaterials["Blue"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 3", vec3(5,5,0), pGame->m_pMeshes["Square"], pGame->m_pMaterials["VertexColor"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 4", vec3(1,1,0), pGame->m_pMeshes["Square"], pGame->m_pMaterials["VertexColor"] ) );
-    m_Objects.push_back( new fw::GameObject( this, "Object 5", vec3(1,9,0), pGame->m_pMeshes["Square"], pGame->m_pMaterials["Blue"] ) );
+    //m_Objects.push_back( new fw::GameObject( this, "Object 1", vec3(0,0,0), pResources->GetMesh("Triangle"), pResources->GetMaterial("VertexColor") ) );
+    //m_Objects.push_back( new fw::GameObject( this, "Object 2", vec3(10,10,0), pResources->GetMesh("Triangle"), pResources->GetMaterial("Blue") ) );
+    //m_Objects.push_back( new fw::GameObject( this, "Object 3", vec3(5,5,0), pResources->GetMesh("Square"), pResources->GetMaterial("VertexColor") ) );
+    //m_Objects.push_back( new fw::GameObject( this, "Object 4", vec3(1,1,0), pResources->GetMesh("Square"), pResources->GetMaterial("VertexColor") ) );
+    //m_Objects.push_back( new fw::GameObject( this, "Object 5", vec3(1,9,0), pResources->GetMesh("Square"), pResources->GetMaterial("Blue") ) );
 
-    delete pTestObjectToDelete;
+    //delete pTestObjectToDelete;
 
-    // Create an entity without a GameObject class.
-    entt::entity entityID = CreateEntity();
-    m_ECSRegistry.emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
-    m_ECSRegistry.emplace<fw::NameData>( entityID, "Headless Object" );
-    m_ECSRegistry.emplace<fw::MeshData>( entityID, pGame->m_pMeshes["Square"], pGame->m_pMaterials["Red"] );
+    //// Create an entity without a GameObject class.
+    //entt::entity entityID = CreateEntity();
+    //m_ECSRegistry.emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
+    //m_ECSRegistry.emplace<fw::NameData>( entityID, "Headless Object" );
+    //m_ECSRegistry.emplace<fw::MeshData>( entityID, pResources->GetMesh("Square"), pResources->GetMaterial("Red") );
 }
 
 BasicScene::~BasicScene()

@@ -25,9 +25,9 @@ static const uint16 g_TriangleIndices[] =
 {
     0, 2, 1,
 };
-fw::Mesh* CreateTriangleMesh()
+fw::Mesh* CreateTriangleMesh(const char* name)
 {
-    return new fw::Mesh( VertexFormat_PosColor::format, g_TriangleVerts, sizeof(g_TriangleVerts), g_TriangleIndices, sizeof(g_TriangleIndices) );
+    return new fw::Mesh( name, VertexFormat_PosColor::format, g_TriangleVerts, sizeof(g_TriangleVerts), g_TriangleIndices, sizeof(g_TriangleIndices) );
 }
 
 //=======================
@@ -47,9 +47,9 @@ static const uint16 g_SquareIndices[] =
 {
     0,2,1, 3,5,4
 };
-fw::Mesh* CreateSquareMesh()
+fw::Mesh* CreateSquareMesh(const char* name)
 {
-    return new fw::Mesh( VertexFormat_PosColor::format, g_SquareVerts, sizeof(g_SquareVerts), g_SquareIndices, sizeof(g_SquareIndices) );
+    return new fw::Mesh( name, VertexFormat_PosColor::format, g_SquareVerts, sizeof(g_SquareVerts), g_SquareIndices, sizeof(g_SquareIndices) );
 }
 
 //=======================
@@ -69,7 +69,7 @@ static const uint16 g_SpriteIndices[] =
 {
     0,2,1, 3,5,4
 };
-fw::Mesh* CreateSpriteMesh()
+fw::Mesh* CreateSpriteMesh(const char* name)
 {
-    return new fw::Mesh( VertexFormat_PosUV::format, g_SpriteVerts, sizeof(g_SpriteVerts), g_SpriteIndices, sizeof(g_SpriteIndices) );
+    return new fw::Mesh( name, VertexFormat_PosUV::format, g_SpriteVerts, sizeof(g_SpriteVerts), g_SpriteIndices, sizeof(g_SpriteIndices) );
 }

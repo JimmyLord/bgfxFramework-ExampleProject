@@ -45,13 +45,6 @@ protected:
     // Interface.
     fw::ImGuiManager* m_pImGuiManager = nullptr;
 
-    // Resources.
-    std::map<std::string, fw::Mesh*> m_pMeshes;
-    std::map<std::string, fw::ShaderProgram*> m_pShaders;
-    std::map<std::string, fw::Texture*> m_pTextures;
-    std::map<std::string, fw::SpriteSheet*> m_pSpriteSheets;
-    std::map<std::string, fw::Material*> m_pMaterials;
-
     // Editor variables.
     ivec2 m_GameWindowSize = vec2( 512, 512 );
     ivec2 m_GameTextureSize = vec2( 2048, 2048 );

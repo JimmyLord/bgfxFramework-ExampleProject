@@ -35,31 +35,6 @@ Game::~Game()
         bgfx::destroy( m_FBOTexture );
     }
 
-    for( auto& meshPair : m_pMeshes )
-    {
-        delete meshPair.second;
-    }
-
-    for( auto& materialPair : m_pMaterials )
-    {
-        delete materialPair.second;
-    }
-
-    for( auto& spriteSheetPair : m_pSpriteSheets )
-    {
-        delete spriteSheetPair.second;
-    }
-
-    for( auto& texturePair : m_pTextures )
-    {
-        delete texturePair.second;
-    }
-
-    for( auto& shaderPair : m_pShaders )
-    {
-        delete shaderPair.second;
-    }
-
     delete m_pPlayerController;
 
     delete m_pEventManager;
@@ -83,31 +58,33 @@ void Game::Init()
     // Create vertex formats.
     InitVertexFormats();
 
+    m_pResources = new fw::ResourceManager();
+
     // Create some meshes.
-    m_pMeshes["Triangle"] = CreateTriangleMesh();
-    m_pMeshes["Square"] = CreateSquareMesh();
-    m_pMeshes["Sprite"] = CreateSpriteMesh();
+    m_pResources->AddMesh( CreateTriangleMesh("Triangle") );
+    m_pResources->AddMesh( CreateSquareMesh("Square") );
+    m_pResources->AddMesh( CreateSpriteMesh("Sprite") );
 
     // Load some shaders.
-    m_pShaders["SolidColor"] = new fw::ShaderProgram( "Data/Shaders/", "SolidColor.vert.bin", "SolidColor.frag.bin" );
-    m_pShaders["VertexColor"] = new fw::ShaderProgram( "Data/Shaders/", "VertexColor.vert.bin", "VertexColor.frag.bin" );
-    m_pShaders["Texture"] = new fw::ShaderProgram( "Data/Shaders/", "Texture.vert.bin", "Texture.frag.bin" );
+    m_pResources->AddShader( new fw::ShaderProgram( "SolidColor", "Data/Shaders/", "SolidColor.vert.bin", "SolidColor.frag.bin" ) );
+    m_pResources->AddShader( new fw::ShaderProgram( "VertexColor", "Data/Shaders/", "VertexColor.vert.bin", "VertexColor.frag.bin" ) );
+    m_pResources->AddShader( new fw::ShaderProgram( "Texture", "Data/Shaders/", "Texture.vert.bin", "Texture.frag.bin" ) );
 
     // Load some textures.
-    m_pTextures["Sokoban"] = new fw::Texture( "Data/Textures/Sokoban.png" );
+    m_pResources->AddTexture( new fw::Texture( "Sokoban", "Data/Textures/Sokoban.png" ) );
 
     // Load some spritesheets.
-    m_pSpriteSheets["Sokoban"] = new fw::SpriteSheet( "Data/Textures/Sokoban.json", m_pTextures["Sokoban"] );
+    m_pResources->AddSpriteSheet( new fw::SpriteSheet( "Sokoban", "Data/Textures/Sokoban.json", m_pResources->GetTexture("Sokoban") ) );
 
     // UV scale and offset for the sokoban player image.
-    fw::SpriteSheet::SpriteInfo info = m_pSpriteSheets["Sokoban"]->GetSpriteByName( "Player/player_01" );
+    fw::SpriteSheet::SpriteInfo info = m_pResources->GetSpriteSheet("Sokoban")->GetSpriteByName( "Player/player_01" );
 
     // Create some materials.
-    m_pMaterials["Red"] = new fw::Material( m_pShaders["SolidColor"], nullptr, fw::color4f::Red(), false );
-    m_pMaterials["Blue"] = new fw::Material( m_pShaders["SolidColor"], nullptr, fw::color4f::Blue(), false );
-    m_pMaterials["Green"] = new fw::Material( m_pShaders["SolidColor"], nullptr, fw::color4f::Green(), false );
-    m_pMaterials["VertexColor"] = new fw::Material( m_pShaders["VertexColor"], nullptr, fw::color4f::White(), false );
-    m_pMaterials["SokobanPlayer01"] = new fw::Material( m_pShaders["Texture"], m_pTextures["Sokoban"], fw::color4f::White(), true, info.asVec4() );
+    m_pResources->AddMaterial( new fw::Material( "Red", m_pResources->GetShader("SolidColor"), nullptr, fw::color4f::Red(), false ) );
+    m_pResources->AddMaterial( new fw::Material( "Blue", m_pResources->GetShader("SolidColor"), nullptr, fw::color4f::Blue(), false ) );
+    m_pResources->AddMaterial( new fw::Material( "Green", m_pResources->GetShader("SolidColor"), nullptr, fw::color4f::Green(), false ) );
+    m_pResources->AddMaterial( new fw::Material( "VertexColor", m_pResources->GetShader("VertexColor"), nullptr, fw::color4f::White(), false ) );
+    m_pResources->AddMaterial( new fw::Material( "SokobanPlayer01", m_pResources->GetShader("Texture"), m_pResources->GetTexture("Sokoban"), fw::color4f::White(), true, info.asVec4() ) );
 
     // Create a controller.
     m_pPlayerController = new PlayerController();

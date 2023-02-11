@@ -12,6 +12,6 @@
 #include "DataTypes.h"
 #include "VertexFormats.h"
 
-fw::Mesh* CreateTriangleMesh();
-fw::Mesh* CreateSquareMesh();
-fw::Mesh* CreateSpriteMesh();
+fw::Mesh* CreateTriangleMesh(const char* name);
+fw::Mesh* CreateSquareMesh(const char* name);
+fw::Mesh* CreateSpriteMesh(const char* name);
