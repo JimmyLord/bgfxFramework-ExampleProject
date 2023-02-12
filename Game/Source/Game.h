@@ -33,28 +33,11 @@ public:
     PlayerController* GetController() { return m_pPlayerController; }
     ivec2 GetGameWindowSize() { return m_GameWindowSize; }
 
-    void Editor_CreateMainFrame();
-    void Editor_DisplayMainMenu();
-    void Editor_DisplayObjectList();
-
 protected:
     // Render to Texture Test
     bgfx::TextureHandle m_FBOTexture = BGFX_INVALID_HANDLE;
     bgfx::FrameBufferHandle m_FBO = BGFX_INVALID_HANDLE;
 
-    // Interface.
-    fw::ImGuiManager* m_pImGuiManager = nullptr;
-
-    // Editor variables.
-    ivec2 m_GameWindowSize = vec2( 512, 512 );
-    ivec2 m_GameTextureSize = vec2( 2048, 2048 );
-
-    // Scene.
-    fw::Scene* m_pActiveScene = nullptr;
-
     // Input.
     PlayerController* m_pPlayerController = nullptr;
-
-    // Other.
-    bool m_ShowDebugStats = false;
 };
