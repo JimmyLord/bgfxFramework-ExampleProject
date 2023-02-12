@@ -26,6 +26,7 @@ public:
     virtual void Draw(int viewID) override;
 
     Game* GetGame();
+    virtual fw::Camera* GetCamera() override { return m_pCamera; }
 
 protected:
     // GameObjects.
