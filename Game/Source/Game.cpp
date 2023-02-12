@@ -25,19 +25,7 @@ Game::Game(fw::FWCore& fwCore)
 
 Game::~Game()
 {
-    if( bgfx::isValid( m_FBO ) )
-    {
-        bgfx::destroy( m_FBO );
-    }
-
-    if( bgfx::isValid( m_FBOTexture ) )
-    {
-        bgfx::destroy( m_FBOTexture );
-    }
-
     delete m_pPlayerController;
-
-    delete m_pEventManager;
 }
 
 void Game::Init()
@@ -86,12 +74,6 @@ void Game::Init()
     m_pPlayerController = new PlayerController();
 
     m_pActiveScene = new BasicScene( this );
-
-    // Create an FBO along with a texture to render to.
-    // TODO: Don't limit this to a 2048x2048 texture. Have it resize if the window is resized to a larger size.
-    m_FBOTexture = bgfx::createTexture2D( m_GameTextureSize.x, m_GameTextureSize.y, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT | BGFX_SAMPLER_COMPARE_LEQUAL );
-    bgfx::TextureHandle fbTextures[] = { m_FBOTexture };
-    m_FBO = bgfx::createFrameBuffer( 1, fbTextures, true );
 }
 
 void Game::OnShutdown()
@@ -118,50 +100,26 @@ void Game::OnEvent(fw::Event* pEvent)
 void Game::Update(float deltaTime)
 {
     GameCore::Update( deltaTime );
-    
-    m_pActiveScene->Update( deltaTime );
 }
 
 void Game::Draw()
 {
-    int viewID = 0;
-
-    // Render the scene into an FBO.
-    bgfx::setViewFrameBuffer( viewID, m_FBO );
-    bgfx::setViewRect( viewID, 0, 0, m_GameWindowSize.x, m_GameWindowSize.y );
-    bgfx::setViewClear( viewID, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0 );
-    
     //bgfx::touch( viewID );
 
     // Setup time uniforms.
-    float time = (float)fw::GetSystemTimeSinceGameStart();
-    bgfx::setUniform( m_pUniforms->m_Map["u_Time"], &time );
+    //float time = (float)fw::GetSystemTimeSinceGameStart();
+    //bgfx::setUniform( m_pUniforms->m_Map["u_Time"], &time );
 
     // Show bgfx debug stats.
-    bgfx::dbgTextClear();
-    if( m_ShowDebugStats )
-    {
-        bgfx::setDebug( BGFX_DEBUG_STATS );
-    }
-    else
-    {
-        bgfx::setDebug( BGFX_DEBUG_NONE );
-    }
+    //bgfx::dbgTextClear();
+    //if( m_ShowDebugStats )
+    //{
+    //    bgfx::setDebug( BGFX_DEBUG_STATS );
+    //}
+    //else
+    //{
+    //    bgfx::setDebug( BGFX_DEBUG_NONE );
+    //}
 
-    // Draw our main view in a window.
-    if( ImGui::Begin("Game view") )
-    {
-        ImVec2 contentMin = ImGui::GetWindowContentRegionMin();
-        ImVec2 contentMax = ImGui::GetWindowContentRegionMax();
-        ImVec2 size = contentMax - contentMin;
-        m_GameWindowSize = ivec2( (int)size.x, (int)size.y );
-        if( m_GameWindowSize.x > m_GameTextureSize.x ) { m_GameWindowSize.x = m_GameTextureSize.x; }
-        if( m_GameWindowSize.y > m_GameTextureSize.y ) { m_GameWindowSize.y = m_GameTextureSize.y; }
-
-        m_pActiveScene->Draw( viewID );
-
-        vec2 uvMax = vec2( (float)m_GameWindowSize.x / m_GameTextureSize.x, (float)m_GameWindowSize.y / m_GameTextureSize.y );
-        ImGui::Image( fw::imguiTexture(m_FBOTexture), ImVec2( (float)m_GameWindowSize.x, (float)m_GameWindowSize.y ), ImVec2(0,0), uvMax );
-    }
-    ImGui::End();
+    GameCore::Draw();
 }

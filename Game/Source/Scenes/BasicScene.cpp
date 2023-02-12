@@ -85,8 +85,16 @@ void BasicScene::Update(float deltaTime)
 
 void BasicScene::Draw(int viewID)
 {
-    ivec2 size = GetGame()->GetGameWindowSize();
-    m_pCamera->SetAspectRatio( (float)size.x / size.y );
+    if( viewID == 0 )
+    {
+        ivec2 size = GetGame()->GetGameWindowSize();
+        m_pCamera->SetAspectRatio( (float)size.x / size.y );
+    }
+    else
+    {
+        ivec2 size = GetGame()->GetEditorWindowSize();
+        m_pCamera->SetAspectRatio( (float)size.x / size.y );
+    }
 
     // Program the view and proj uniforms from the camera.
     m_pCamera->Enable( viewID );

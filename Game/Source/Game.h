@@ -31,13 +31,8 @@ public:
     virtual void Draw() override;
 
     PlayerController* GetController() { return m_pPlayerController; }
-    ivec2 GetGameWindowSize() { return m_GameWindowSize; }
 
 protected:
-    // Render to Texture Test
-    bgfx::TextureHandle m_FBOTexture = BGFX_INVALID_HANDLE;
-    bgfx::FrameBufferHandle m_FBO = BGFX_INVALID_HANDLE;
-
     // Input.
     PlayerController* m_pPlayerController = nullptr;
 };
