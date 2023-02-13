@@ -94,6 +94,8 @@ void Game::StartFrame(float deltaTime)
 void Game::OnEvent(fw::Event* pEvent)
 {
     // Process events.
+    GameCore::OnEvent( pEvent );
+
     m_pPlayerController->OnEvent( pEvent );
 }
 

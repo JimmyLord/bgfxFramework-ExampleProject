@@ -36,11 +36,14 @@ BasicScene::BasicScene(Game* pGame)
 
     delete pTestObjectToDelete;
 
+    // Create a base GameObject with no components.
+    m_Objects.push_back( new fw::GameObject( this ) );
+
     // Create an entity without a GameObject class.
     entt::entity entityID = CreateEntity();
-    m_ECSRegistry.emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
-    m_ECSRegistry.emplace<fw::NameData>( entityID, "Headless Object" );
-    m_ECSRegistry.emplace<fw::MeshData>( entityID, pResources->GetMesh("Square"), pResources->GetMaterial("Red") );
+    m_pComponentManager->GetECSRegistry().emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
+    m_pComponentManager->GetECSRegistry().emplace<fw::NameData>( entityID, "Headless Object" );
+    m_pComponentManager->GetECSRegistry().emplace<fw::MeshData>( entityID, pResources->GetMesh("Square"), pResources->GetMaterial("Red") );
 }
 
 BasicScene::~BasicScene()
