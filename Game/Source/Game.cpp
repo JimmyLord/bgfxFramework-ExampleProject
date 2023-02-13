@@ -25,7 +25,11 @@ Game::Game(fw::FWCore& fwCore)
 
 Game::~Game()
 {
+    delete m_pActiveScene;
+    
     delete m_pPlayerController;
+
+    delete m_pResources;
 }
 
 void Game::Init()
