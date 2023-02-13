@@ -18,7 +18,7 @@
 #include "Scenes/BasicScene.h"
 
 Game::Game(fw::FWCore& fwCore)
-    : GameCore( fwCore )
+    : fw::EditorCore( fwCore )
 {
     Init();
 }
@@ -86,7 +86,7 @@ void Game::OnShutdown()
 
 void Game::StartFrame(float deltaTime)
 {
-    GameCore::StartFrame( deltaTime );
+    fw::EditorCore::StartFrame( deltaTime );
 
     // Reset the controller.
     m_pPlayerController->StartFrame();
@@ -98,7 +98,7 @@ void Game::StartFrame(float deltaTime)
 bool Game::OnEvent(fw::Event* pEvent)
 {
     // Process events.
-    if( GameCore::OnEvent( pEvent ) == true )
+    if( fw::EditorCore::OnEvent( pEvent ) == true )
         return true;
 
     m_pPlayerController->OnEvent( pEvent );
@@ -108,7 +108,7 @@ bool Game::OnEvent(fw::Event* pEvent)
 
 void Game::Update(float deltaTime)
 {
-    GameCore::Update( deltaTime );
+    fw::EditorCore::Update( deltaTime );
 }
 
 void Game::Draw()
@@ -130,5 +130,5 @@ void Game::Draw()
     //    bgfx::setDebug( BGFX_DEBUG_NONE );
     //}
 
-    GameCore::Draw();
+    fw::EditorCore::Draw();
 }

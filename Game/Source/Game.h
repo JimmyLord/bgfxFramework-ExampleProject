@@ -15,7 +15,7 @@
 class Player;
 class PlayerController;
 
-class Game : public fw::GameCore
+class Game : public fw::EditorCore
 {
     friend class BasicScene; // Temp for access to Resources.
     
