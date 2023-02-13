@@ -91,12 +91,15 @@ void Game::StartFrame(float deltaTime)
     m_pEventManager->DispatchAllEvents( deltaTime, this );
 }
 
-void Game::OnEvent(fw::Event* pEvent)
+bool Game::OnEvent(fw::Event* pEvent)
 {
     // Process events.
-    GameCore::OnEvent( pEvent );
+    if( GameCore::OnEvent( pEvent ) == true )
+        return true;
 
     m_pPlayerController->OnEvent( pEvent );
+
+    return false;
 }
 
 void Game::Update(float deltaTime)
