@@ -15,7 +15,6 @@
 BasicScene::BasicScene(Game* pGame)
     : Scene( pGame )
 {
-    m_pComponentManager = new fw::ComponentManager();
     PlayerController* pController = pGame->GetController();
     fw::ResourceManager* pResources = pGame->GetResourceManager();
     
@@ -49,6 +48,11 @@ BasicScene::BasicScene(Game* pGame)
 BasicScene::~BasicScene()
 {
     delete m_pCamera;
+}
+
+void BasicScene::CreateComponentManager()
+{
+    m_pComponentManager = new fw::ComponentManager();
 }
 
 void BasicScene::Init()
@@ -92,11 +96,13 @@ void BasicScene::Draw(int viewID)
     {
         ivec2 size = GetGame()->GetGameWindowSize();
         m_pCamera->SetAspectRatio( (float)size.x / size.y );
+        m_pCamera->Update( 0 );
     }
     else
     {
         ivec2 size = GetGame()->GetEditorWindowSize();
         m_pCamera->SetAspectRatio( (float)size.x / size.y );
+        m_pCamera->Update( 0 );
     }
 
     // Program the view and proj uniforms from the camera.

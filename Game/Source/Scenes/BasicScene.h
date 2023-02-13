@@ -18,6 +18,9 @@ public:
     BasicScene(Game* pGame);
     virtual ~BasicScene() override;
 
+    // Customization.
+    virtual void CreateComponentManager() override;
+
     virtual void Init() override;
     virtual void OnShutdown() override;
     virtual void StartFrame(float deltaTime) override;
