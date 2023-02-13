@@ -35,8 +35,8 @@ Game::~Game()
 void Game::Init()
 {
     // General renderer settings.
-    bgfx::setViewClear( 0, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH, 0x000030ff, 1.0f, 0 );
-    bgfx::setViewRect( 0, 0, 0, m_FWCore.GetWindowClientWidth(), m_FWCore.GetWindowClientHeight() );
+    //bgfx::setViewClear( 0, BGFX_CLEAR_COLOR|BGFX_CLEAR_DEPTH, 0x000030ff, 1.0f, 0 );
+    //bgfx::setViewRect( 0, 0, 0, m_FWCore.GetWindowClientWidth(), m_FWCore.GetWindowClientHeight() );
 
     m_pEventManager = new fw::EventManager();
 

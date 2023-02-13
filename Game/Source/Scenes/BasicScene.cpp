@@ -92,7 +92,7 @@ void BasicScene::Update(float deltaTime)
 
 void BasicScene::Draw(int viewID)
 {
-    if( viewID == 0 )
+    if( viewID == fw::Views::View_Game )
     {
         ivec2 size = GetGame()->GetGameWindowSize();
         m_pCamera->SetAspectRatio( (float)size.x / size.y );
