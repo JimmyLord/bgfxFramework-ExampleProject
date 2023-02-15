@@ -82,6 +82,7 @@ void Game::Init()
 
 void Game::OnShutdown()
 {
+    EditorCore::OnShutdown();
 }
 
 void Game::StartFrame(float deltaTime)
