@@ -32,6 +32,8 @@ BasicScene::BasicScene(Game* pGame)
     m_Objects.push_back( new fw::GameObject( this, "Object 3", vec3(5,5,0), pResources->GetMesh("Square"), pResources->GetMaterial("VertexColor") ) );
     m_Objects.push_back( new fw::GameObject( this, "Object 4", vec3(1,1,0), pResources->GetMesh("Square"), pResources->GetMaterial("VertexColor") ) );
     m_Objects.push_back( new fw::GameObject( this, "Object 5", vec3(1,9,0), pResources->GetMesh("Square"), pResources->GetMaterial("Blue") ) );
+    
+    m_Objects.push_back( new fw::GameObject( this, "Dissolving Object", vec3(-2,0,0), pResources->GetMesh("Sprite"), pResources->GetMaterial("DissolvingSokobanPlayer") ) );
 
     delete pTestObjectToDelete;
 
@@ -92,6 +94,13 @@ void BasicScene::Update(float deltaTime)
 
 void BasicScene::Draw(int viewID)
 {
+    fw::ResourceManager* pResources = m_pGameCore->GetResourceManager();
+
+    // Temp debug code to make a dissolve effect for testing.
+    float perc = pResources->GetMaterial( "DissolvingSokobanPlayer" )->GetControlPerc();
+    ImGui::SliderFloat( "Dissolve", &perc, 0, 1 );
+    pResources->GetMaterial( "DissolvingSokobanPlayer" )->SetControlPerc( perc );
+
     if( viewID == fw::EditorViews::EditorView_Game )
     {
         ivec2 size = GetGame()->GetGameWindowSize();

@@ -57,9 +57,11 @@ void Game::Init()
     m_pResources->AddShader( new fw::ShaderProgram( "SolidColor", "Data/Shaders/", "SolidColor.vert.bin", "SolidColor.frag.bin" ) );
     m_pResources->AddShader( new fw::ShaderProgram( "VertexColor", "Data/Shaders/", "VertexColor.vert.bin", "VertexColor.frag.bin" ) );
     m_pResources->AddShader( new fw::ShaderProgram( "Texture", "Data/Shaders/", "Texture.vert.bin", "Texture.frag.bin" ) );
+    m_pResources->AddShader( new fw::ShaderProgram( "Dissolve", "Data/Shaders/", "Dissolve.vert.bin", "Dissolve.frag.bin" ) );
 
     // Load some textures.
     m_pResources->AddTexture( new fw::Texture( "Sokoban", "Data/Textures/Sokoban.png" ) );
+    m_pResources->AddTexture( new fw::Texture( "Noise", "Data/Textures/Noise.png" ) );
 
     // Load some spritesheets.
     m_pResources->AddSpriteSheet( new fw::SpriteSheet( "Sokoban", "Data/Textures/Sokoban.json", m_pResources->GetTexture("Sokoban") ) );
@@ -73,6 +75,8 @@ void Game::Init()
     m_pResources->AddMaterial( new fw::Material( "Green", m_pResources->GetShader("SolidColor"), nullptr, fw::color4f::Green(), false ) );
     m_pResources->AddMaterial( new fw::Material( "VertexColor", m_pResources->GetShader("VertexColor"), nullptr, fw::color4f::White(), false ) );
     m_pResources->AddMaterial( new fw::Material( "SokobanPlayer01", m_pResources->GetShader("Texture"), m_pResources->GetTexture("Sokoban"), fw::color4f::White(), true, info.asVec4() ) );
+    m_pResources->AddMaterial( new fw::Material( "DissolvingSokobanPlayer", m_pResources->GetShader("Dissolve"), m_pResources->GetTexture("Sokoban"), fw::color4f::White(), true, info.asVec4() ) );
+    m_pResources->GetMaterial( "DissolvingSokobanPlayer" )->SetTextureNoise( m_pResources->GetTexture("Noise") );
 
     // Create a controller.
     m_pPlayerController = new PlayerController();
