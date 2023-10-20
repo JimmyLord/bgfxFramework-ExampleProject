@@ -96,11 +96,6 @@ void BasicScene::Draw(int viewID)
 {
     fw::ResourceManager* pResources = m_pGameCore->GetResourceManager();
 
-    // Temp debug code to make a dissolve effect for testing.
-    float perc = pResources->GetMaterial( "DissolvingSokobanPlayer" )->GetControlPerc();
-    ImGui::SliderFloat( "Dissolve", &perc, 0, 1 );
-    pResources->GetMaterial( "DissolvingSokobanPlayer" )->SetControlPerc( perc );
-
     if( viewID == fw::EditorViews::EditorView_Game )
     {
         ivec2 size = GetGame()->GetGameWindowSize();
