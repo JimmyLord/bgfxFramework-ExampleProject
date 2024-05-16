@@ -15,26 +15,26 @@ rem @mkdir ..\Data\Shaders\essl
 @call; rem clear the errorlevel
 
 @FOR %%G in ("Shaders\*.vert") DO (
-    shaderc -f %%G -o ../Data/Shaders/dx9/%%~nxG.bin   --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p vs_3_0
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/dx9/%%~nxG.bin   --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p s_3_0
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built dx9 %%G)
-    shaderc -f %%G -o ../Data/Shaders/dx11/%%~nxG.bin  --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p vs_4_0
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/dx11/%%~nxG.bin  --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p s_4_0
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built dx11 %%G)
-    shaderc -f %%G -o ../Data/Shaders/glsl/%%~nxG.bin  --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p 440
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/glsl/%%~nxG.bin  --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p 440
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built glsl %%G)
-    shaderc -f %%G -o ../Data/Shaders/spirv/%%~nxG.bin --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p spirv
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/spirv/%%~nxG.bin --type v --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p spirv
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built spirv %%G)
 )
 
 IF !ERRORLEVEL! NEQ 0 (goto end)
 
 @FOR %%G in ("Shaders\*.frag") DO (
-    shaderc -f %%G -o ../Data/Shaders/dx9/%%~nxG.bin   --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p ps_3_0
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/dx9/%%~nxG.bin   --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p s_3_0
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built dx9 %%G)
-    shaderc -f %%G -o ../Data/Shaders/dx11/%%~nxG.bin  --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p ps_4_0
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/dx11/%%~nxG.bin  --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p s_4_0
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built dx11 %%G)
-    shaderc -f %%G -o ../Data/Shaders/glsl/%%~nxG.bin  --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p 440
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/glsl/%%~nxG.bin  --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p 440
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built glsl %%G)
-    shaderc -f %%G -o ../Data/Shaders/spirv/%%~nxG.bin --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p spirv
+    ..\..\Libraries\bgfxFramework\Tools\shaderc -f %%G -o ../Data/Shaders/spirv/%%~nxG.bin --type f --platform windows -i ../../Libraries/bgfxFramework/Libraries/bgfx/src -p spirv
     IF !ERRORLEVEL! NEQ 0 (goto end) ELSE (echo Built spirv %%G)
 )
 
@@ -42,4 +42,3 @@ echo No errors.
 
 :end
 pause
-exit
