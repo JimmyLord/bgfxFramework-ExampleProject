@@ -59,9 +59,6 @@ source_group( "CMake PCH Files" FILES ${GamePCHFiles} )
 # Libraries to Link
 target_link_libraries( GameProject
 	Framework
-	bgfx
-	bx
-	bimg
 )
 
 # Visual Studio Settings

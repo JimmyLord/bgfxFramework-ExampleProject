@@ -40,11 +40,11 @@ BasicScene::BasicScene(Game* pGame)
     // Create a base GameObject with no components.
     m_Objects.push_back( new fw::GameObject( this ) );
 
-    // Create an entity without a GameObject class.
-    entt::entity entityID = CreateEntity();
-    m_pComponentManager->GetECSRegistry().emplace<fw::TransformData>( entityID, vec3(3,7,0), vec3(0), vec3(1) );
-    m_pComponentManager->GetECSRegistry().emplace<fw::NameData>( entityID, "Headless Object" );
-    m_pComponentManager->GetECSRegistry().emplace<fw::MeshData>( entityID, pResources->GetMesh("Square"), pResources->GetMaterial("Red") );
+    //// Create an entity without a GameObject class.
+    //flecs::entity entityID = CreateEntity();
+    //entityID.set<fw::TransformData>( {vec3(3,7,0), vec3(0), vec3(1)} );
+    //entityID.set<fw::NameData>( {"Headless Object"} );
+    //entityID.set<fw::MeshData>( {pResources->GetMesh("Square"), pResources->GetMaterial("Red")} );
 }
 
 BasicScene::~BasicScene()

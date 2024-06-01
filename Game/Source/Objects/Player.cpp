@@ -48,7 +48,7 @@ void Player::Update(float deltaTime)
         dir.x += 1;
     }
 
-    fw::TransformData& transformData = m_pScene->GetECSRegistry().get<fw::TransformData>( m_EntityID );
+    fw::TransformData& transformData = m_Entity.ensure<fw::TransformData>();
 
     if( m_pPlayerController->WasPressed( PlayerController::Mask::Action ) )
     {
@@ -59,4 +59,6 @@ void Player::Update(float deltaTime)
     dir.Normalize();
 
     transformData.position += dir * speed * deltaTime;
+
+    m_Entity.modified<fw::TransformData>();
 }
