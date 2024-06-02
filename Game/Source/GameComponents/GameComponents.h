@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Jimmy Lord
+// Copyright (c) 2024 Jimmy Lord
 //
 // This software is provided 'as-is', without any express or implied warranty.  In no event will the authors be held liable for any damages arising from the use of this software.
 // Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -9,18 +9,25 @@
 
 #pragma once
 
-#include "DataTypes.h"
+#include "Framework.h"
 
 class PlayerController;
 
-class Player : public fw::GameObject
+//====================
+// PlayerComponent
+//====================
+
+struct PlayerData
+{
+    float speed = 4.0f;
+    PlayerController* pPlayerController = nullptr;
+};
+
+class PlayerComponentDefinition : public fw::BaseComponentDefinition
 {
 public:
-    Player(fw::Scene* pScene, PlayerController* pPlayerController, std::string name, vec3 pos, fw::Mesh* pMesh, fw::Material* pMaterial);
-    virtual ~Player();
-
-    virtual void Update(float deltaTime) override;
-
-protected:
-    PlayerController* m_pPlayerController = nullptr;
+    virtual const char* GetName() override { return "PlayerData"; }
+    virtual void SaveToJSON(fw::GameObject* pObject, nlohmann::json& jComponent, const void* pData) override;
+    virtual void LoadFromJSON(fw::GameObject* pObject, flecs::entity entity, nlohmann::json& jComponent, fw::ResourceManager* pResourceManager) override;
+    virtual void Editor_AddToInspector(flecs::entity entity) override;
 };

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022-2023 Jimmy Lord
+// Copyright (c) 2022-2024 Jimmy Lord
 //
 // This software is provided 'as-is', without any express or implied warranty.  In no event will the authors be held liable for any damages arising from the use of this software.
 // Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -10,19 +10,22 @@
 #include "Framework.h"
 #include "BasicScene.h"
 #include "Game.h"
-#include "Objects/Player.h"
+#include "GameDataTypes.h"
+#include "GameComponents/GameComponents.h"
+#include "GameComponents/GameSystems.h"
 
 BasicScene::BasicScene(Game* pGame)
     : Scene( pGame )
 {
-    PlayerController* pController = pGame->GetController();
+    PlayerController* pController = pGame->GetController( 0 );
     fw::ResourceManager* pResources = pGame->GetResourceManager();
-    
+
     // Create some GameObjects.
     m_pCamera = new fw::Camera( this, vec3(5,5,-20) );
     m_pCamera->SetLookAtPosition( vec3(5,5,0) );
-    //m_Objects.push_back( m_pCamera );
-    m_pPlayer = new Player( this, pController, "Player", vec3(6,5,-0.1f), pResources->GetMesh("Sprite"), pResources->GetMaterial("SokobanPlayer01") );
+
+    m_pPlayer = new fw::GameObject( this, "Player", vec3(6,5,-0.1f), pResources->GetMesh("Sprite"), pResources->GetMaterial("SokobanPlayer01") );
+    m_pPlayer->GetEntity().set<PlayerData>( {4.0f, pController} );
     m_Objects.push_back( m_pPlayer );
 
     fw::GameObject* pTestObjectToDelete = new fw::GameObject( this, "delete me", vec3(1,9,0), pResources->GetMesh("Square"), pResources->GetMaterial("Blue") );
@@ -32,7 +35,7 @@ BasicScene::BasicScene(Game* pGame)
     m_Objects.push_back( new fw::GameObject( this, "Object 3", vec3(5,5,0), pResources->GetMesh("Square"), pResources->GetMaterial("VertexColor") ) );
     m_Objects.push_back( new fw::GameObject( this, "Object 4", vec3(1,1,0), pResources->GetMesh("Square"), pResources->GetMaterial("VertexColor") ) );
     m_Objects.push_back( new fw::GameObject( this, "Object 5", vec3(1,9,0), pResources->GetMesh("Square"), pResources->GetMaterial("Blue") ) );
-    
+
     m_Objects.push_back( new fw::GameObject( this, "Dissolving Object", vec3(-2,0,0), pResources->GetMesh("Sprite"), pResources->GetMaterial("DissolvingSokobanPlayer") ) );
 
     delete pTestObjectToDelete;
@@ -50,11 +53,6 @@ BasicScene::BasicScene(Game* pGame)
 BasicScene::~BasicScene()
 {
     delete m_pCamera;
-}
-
-void BasicScene::CreateComponentManager()
-{
-    m_pComponentManager = new fw::ComponentManager();
 }
 
 void BasicScene::Init()
@@ -89,6 +87,8 @@ void BasicScene::Update(float deltaTime)
 {
     Scene::Update( deltaTime );
 
+    UpdateAllPlayerComponents( m_pComponentManager, deltaTime );
+
     m_pCamera->Update( deltaTime );
 }
 
@@ -111,7 +111,6 @@ void BasicScene::Draw(int viewID)
         //m_pCamera->SetAspectRatio( (float)size.x / size.y );
         //m_pCamera->Update( 0 );
     }
-
 
     // Draw all objects.
     Scene::Draw( viewID );

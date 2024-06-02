@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Jimmy Lord
+// Copyright (c) 2022-2024 Jimmy Lord
 //
 // This software is provided 'as-is', without any express or implied warranty.  In no event will the authors be held liable for any damages arising from the use of this software.
 // Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -9,16 +9,18 @@
 
 #include "Framework.h"
 
-#include "DataTypes.h"
+#include "GameDataTypes.h"
 #include "Game.h"
+#include "GameComponents/GameComponents.h"
 #include "Events/GameEvents.h"
 #include "Meshes/Shapes.h"
 #include "Meshes/VertexFormats.h"
 #include "Objects/PlayerController.h"
 #include "Scenes/BasicScene.h"
+#include "Scenes/GameScene.h"
 
 Game::Game(fw::FWCore& fwCore)
-    : fw::EditorCore( fwCore )
+    : Parent( fwCore )
 {
     Init();
 }
@@ -26,10 +28,23 @@ Game::Game(fw::FWCore& fwCore)
 Game::~Game()
 {
     delete m_pActiveScene;
-    
+
     delete m_pPlayerController;
 
     delete m_pResources;
+}
+
+fw::ComponentManager* Game::CreateComponentManager()
+{
+    fw::ComponentManager* pComponentManager = new fw::ComponentManager();
+    pComponentManager->RegisterComponentDefinition<PlayerData, PlayerComponentDefinition>();
+
+    return pComponentManager;
+}
+
+fw::Scene* Game::CreateScene()
+{
+    return new GameScene( this );
 }
 
 void Game::Init()
@@ -82,6 +97,7 @@ void Game::Init()
     m_pPlayerController = new PlayerController();
 
     m_pActiveScene = new BasicScene( this );
+    m_pActiveScene->Init();
 }
 
 void Game::OnShutdown()
@@ -91,7 +107,7 @@ void Game::OnShutdown()
 
 void Game::StartFrame(float deltaTime)
 {
-    fw::EditorCore::StartFrame( deltaTime );
+    Parent::StartFrame( deltaTime );
 
     // Reset the controller.
     m_pPlayerController->StartFrame();
@@ -103,7 +119,7 @@ void Game::StartFrame(float deltaTime)
 bool Game::OnEvent(fw::Event* pEvent)
 {
     // Process events.
-    if( fw::EditorCore::OnEvent( pEvent ) == true )
+    if( Parent::OnEvent( pEvent ) == true )
         return true;
 
     m_pPlayerController->OnEvent( pEvent );
@@ -113,7 +129,7 @@ bool Game::OnEvent(fw::Event* pEvent)
 
 void Game::Update(float deltaTime)
 {
-    fw::EditorCore::Update( deltaTime );
+    Parent::Update( deltaTime );
 }
 
 void Game::Draw()
@@ -135,5 +151,5 @@ void Game::Draw()
     //    bgfx::setDebug( BGFX_DEBUG_NONE );
     //}
 
-    fw::EditorCore::Draw();
+    Parent::Draw();
 }

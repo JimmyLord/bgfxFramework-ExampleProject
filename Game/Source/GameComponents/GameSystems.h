@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022-2024 Jimmy Lord
+// Copyright (c) 2024 Jimmy Lord
 //
 // This software is provided 'as-is', without any express or implied warranty.  In no event will the authors be held liable for any damages arising from the use of this software.
 // Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -10,34 +10,5 @@
 #pragma once
 
 #include "Framework.h"
-#include "DataTypes.h"
 
-class Player;
-class PlayerController;
-
-class Game : public fw::EditorCore
-{
-private:
-    using Parent = fw::EditorCore;
-
-public:
-    Game(fw::FWCore& fwCore);
-    virtual ~Game() override;
-
-    virtual fw::ComponentManager* CreateComponentManager() override;
-    virtual fw::Scene* CreateScene() override;
-
-    void Init();
-    virtual void OnShutdown() override;
-    virtual void StartFrame(float deltaTime) override;
-    virtual bool OnEvent(fw::Event* pEvent) override;
-    virtual void Update(float deltaTime) override;
-    virtual void Draw() override;
-
-    PlayerController* GetController(int index) { return m_pPlayerController; }
-    int GetControllerIndex(PlayerController* pController) { return 0; }
-
-protected:
-    // Input.
-    PlayerController* m_pPlayerController = nullptr;
-};
+void UpdateAllPlayerComponents(fw::ComponentManager* pComponentManager, float deltaTime);

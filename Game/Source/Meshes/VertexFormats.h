@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "DataTypes.h"
+#include "GameDataTypes.h"
 
 void InitVertexFormats();
 
