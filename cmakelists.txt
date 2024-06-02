@@ -48,7 +48,7 @@ target_include_directories( GameProject PUBLIC
 	Libraries/bgfxFramework/Source
 )
 
-target_compile_features( GameProject PRIVATE cxx_std_17 )
+target_compile_features( GameProject PRIVATE cxx_std_20 )
 target_compile_options( GameProject PUBLIC "/Zc:__cplusplus" )
 
 # PCH Files
