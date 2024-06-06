@@ -13,7 +13,7 @@
 #include "GameDataTypes.h"
 #include "Objects/PlayerController.h"
 
-void UpdateAllPlayerComponents(fw::ComponentManager* pComponentManager, float deltaTime)
+void System_UpdateAllPlayerComponents(fw::ComponentManager* pComponentManager, float deltaTime)
 {
     flecs::world& world = pComponentManager->GetFlecsWorld();
 

@@ -87,7 +87,7 @@ void BasicScene::Update(float deltaTime)
 {
     Scene::Update( deltaTime );
 
-    UpdateAllPlayerComponents( m_pComponentManager, deltaTime );
+    System_UpdateAllPlayerComponents( m_pComponentManager, deltaTime );
 
     m_pCamera->Update( deltaTime );
 }
